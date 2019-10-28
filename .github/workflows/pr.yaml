@@ -1,0 +1,13 @@
+on: pull_request
+name: dockerfile linting
+jobs:
+  dockerfilelint:
+    name: dockerfile lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: hadolint
+      uses: burdzwastaken/hadolint-action@master
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        HADOLINT_ACTION_DOCKERFILE_FOLDER: .
