@@ -1,5 +1,7 @@
+# image used to copy our official nginx binaries
 FROM nginx:1.17.5 AS base
 
+# copy the required libraries out of the official nginx image (based on debian)
 RUN rm -r /opt && mkdir /opt \
     && cp -a --parents /usr/lib/nginx /opt \
     && cp -a --parents /var/cache/nginx /opt \
@@ -23,9 +25,20 @@ RUN rm -r /opt && mkdir /opt \
 # ---
 #
 
+# start from the distroless scratch image (with glibc), based on debian:buster
 FROM gcr.io/distroless/base-debian10:nonroot
+
+# copy in our required libraries
 COPY --from=base --chown=nonroot /opt /
+
+# copy our config files
 COPY --chown=nonroot mime.types nginx.conf /
+
+# run as an unprivileged user
 USER nonroot
+
+# default nginx port
 EXPOSE 8080
+
+# entrypoint
 ENTRYPOINT ["/usr/sbin/nginx", "-p", "/tmp/", "-g", "error_log /dev/stderr notice;", "-c", "/nginx.conf"]
