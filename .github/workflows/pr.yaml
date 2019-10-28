@@ -11,3 +11,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         HADOLINT_ACTION_DOCKERFILE_FOLDER: .
+  
+  dockerbuild:
+    name: docker build
+    runs-on: ubuntu-latest
+    steps:
+    - name: get docker tag
+      id: vars
+      run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
+
+    - name: docker build
+      run: docker build . --file Dockerfile --tag image:${{ steps.vars.outputs.docker_tag }}
