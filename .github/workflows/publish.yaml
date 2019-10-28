@@ -17,10 +17,8 @@ jobs:
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         registry: docker.pkg.github.com
-        name: ironpeakservices/iron-nginx
-        username: 'hazcod'
+        name: "ironpeakservices/iron-nginx:${NGINX_VERSION}"
         password: ${{ secrets.GITHUB_TOKEN }}
-        tag: "${{ env.NGINX_VERSION }}"
     - run: rm /github/home/.docker/config.json
 
 
