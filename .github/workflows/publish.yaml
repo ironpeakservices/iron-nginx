@@ -18,6 +18,7 @@ jobs:
       with:
         registry: docker.pkg.github.com
         name: "ironpeakservices/iron-nginx:${NGINX_VERSION}"
+        username: hazcod
         password: ${{ secrets.GITHUB_TOKEN }}
     - run: rm /github/home/.docker/config.json
 
