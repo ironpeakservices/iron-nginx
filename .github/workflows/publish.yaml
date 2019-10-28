@@ -21,6 +21,6 @@ jobs:
         name: "ironpeakservices/iron-nginx/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
         username: hazcod
         password: ${{ secrets.GITHUB_TOKEN }}
-    - run: rm /github/home/.docker/config.json
+
 
 
