@@ -1,0 +1,40 @@
+version: '3.7'
+
+networks:
+    frontend:
+        name: frontend
+        # driver: overlay on swarm mode
+        internal: true
+
+services:
+    nginx:
+        container_name: nginx
+        hostname: nginx
+
+        image: "nginx"
+
+        expose:
+        - 8080
+
+        tty: false
+
+        restart: "on-failure:5"
+
+        read_only: true
+
+        security_opt:
+            - "no-new-privileges"
+
+        # only on compose version 2.x
+        #pids_limit: 1
+
+        cap_drop:
+            - ALL
+
+        networks:
+        - frontend
+
+        deploy:
+            resources:
+                limits:
+                    memory: 1GB
