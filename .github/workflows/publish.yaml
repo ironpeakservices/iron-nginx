@@ -11,13 +11,14 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: extract tag
-      run: echo ::set-env name=NGINX_VERSION::$(head -n2 Dockerfile | tail -n1 | cut -d ' ' -f 2 | cut -d ':' -f 2)
-    - run: echo "Pushing version $NGINX_VERSION"
+      id: vars
+      run: echo ::set-output name=nginx_version::$(head -n2 Dockerfile | tail -n1 | cut -d ' ' -f 2 | cut -d ':' -f 2)
+    - run: echo "Pushing version ${{ steps.vars.outputs.nginx_version }}"
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
         registry: docker.pkg.github.com
-        name: "ironpeakservices/iron-nginx:${NGINX_VERSION}"
+        name: "ironpeakservices/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
         username: hazcod
         password: ${{ secrets.GITHUB_TOKEN }}
     - run: rm /github/home/.docker/config.json
