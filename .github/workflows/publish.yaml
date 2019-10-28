@@ -1,0 +1,22 @@
+on:
+  push:
+    branches:
+    - master
+
+name: push image
+jobs:
+  dockerpush:
+    name: docker build
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Publish Docker Image to GPR
+      uses: machine-learning-apps/gpr-docker-publish@master
+      with:
+        USERNAME: 'hazcod'
+        PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+        IMAGE_NAME: 'iron-nginx'
+        DOCKERFILE_PATH: 'Dockerfile'
+        BUILD_CONTEXT: '.'
+
+
