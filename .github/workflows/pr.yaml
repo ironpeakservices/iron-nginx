@@ -17,9 +17,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
-    - name: get docker tag
+    - name: extract tag
       id: vars
-      run: echo ::set-output name=docker_tag::$(echo ${GITHUB_REF} | cut -d'/' -f3)-${GITHUB_SHA}
+      run: echo ::set-output name=nginx_version::$(grep '^FROM nginx' Dockerfile  | cut -d ' ' -f 2 | cut -d ':' -f 2)
 
     - name: docker build
-      run: docker build . --file Dockerfile --tag image:${{ steps.vars.outputs.docker_tag }}
+      run: docker build . --file Dockerfile --tag image:${{ steps.vars.outputs.nginx_version }}
