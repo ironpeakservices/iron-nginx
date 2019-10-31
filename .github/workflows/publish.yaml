@@ -12,7 +12,7 @@ jobs:
     - uses: actions/checkout@master
     - name: extract tag
       id: vars
-      run: echo ::set-output name=nginx_version::$(head -n2 Dockerfile | tail -n1 | cut -d ' ' -f 2 | cut -d ':' -f 2)
+      run: echo ::set-output name=nginx_version::$(grep '^FROM nginx' Dockerfile  | cut -d ' ' -f 2 | cut -d ':' -f 2)
     - run: echo "Pushing version ${{ steps.vars.outputs.nginx_version }}"
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master

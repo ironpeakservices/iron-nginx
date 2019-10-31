@@ -15,3 +15,7 @@ We build from the official nginx docker image, but additionally:
 FROM docker.pkg.github.com/ironpeakservices/iron-nginx/iron-nginx:1.17.5
 COPY --chown=nonroot css/ js/ html/ /assets
 ```
+
+## Update policy
+Updates to the official nginx docker image are automatically created as a pull request and trigger linting & a docker build.
+When those checks complete without errors, a merge into master will trigger a deploy with the same nginx version to packages.
