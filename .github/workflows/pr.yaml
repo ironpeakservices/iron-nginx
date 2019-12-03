@@ -1,6 +1,17 @@
 on: pull_request
 name: dockerfile linting
 jobs:
+
+  golanglint:
+    name: golang lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: hazcod/action-golangci-lint@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        directory: healthcheck
+
   dockerfilelint:
     name: dockerfile lint
     runs-on: ubuntu-latest
