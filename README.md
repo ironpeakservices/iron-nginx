@@ -6,6 +6,7 @@ Secure base image for running nginx.
 ## How is this different?
 We build from the official nginx docker image, but additionally:
 - an empty scratch container (no shell, unprivileged user, ...) for a tiny attack vector
+- secure healthcheck binary for embedded container monitoring
 - hardened nginx config
 - hardened Docker Compose file
 - max memory set to 1GB
