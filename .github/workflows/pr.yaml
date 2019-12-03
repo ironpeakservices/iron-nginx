@@ -1,6 +1,17 @@
 on: pull_request
 name: dockerfile linting
 jobs:
+
+  golanglint:
+    name: golang lint
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: hazcod/action-golangci-lint@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        directory: healthcheck
+
   dockerfilelint:
     name: dockerfile lint
     runs-on: ubuntu-latest
@@ -20,6 +31,27 @@ jobs:
     - name: extract tag
       id: vars
       run: echo ::set-output name=nginx_version::$(grep '^FROM nginx' Dockerfile  | cut -d ' ' -f 2 | cut -d ':' -f 2)
-
     - name: docker build
       run: docker build . --file Dockerfile --tag image:${{ steps.vars.outputs.nginx_version }}
+
+  dockerscan:
+    name: docker security scan
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: docker build
+      run: docker build . --file Dockerfile --tag image
+    - name: cached scan db
+      uses: actions/cache@preview
+      with:
+        path: vulndb/
+        key: trivy-vulndb
+    - name: run security scan
+      env:
+        DISTRO: debian
+      run: |
+        docker run --rm \
+          -v /var/run/docker.sock:/var/run/docker.sock \
+          -v "$(pwd)/vulndb/":/root/.cache/ \
+          aquasec/trivy --severity HIGH,CRITICAL,MEDIUM --no-progress --only-update $DISTRO --ignore-unfixed --exit-code 1 --cache-dir /root/.cache/ image
+        docker run --rm -v "$(pwd)/vulndb/":/root/.cache/ alpine:latest chmod 777 -R /root/.cache/

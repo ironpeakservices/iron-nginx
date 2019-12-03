@@ -1,3 +1,12 @@
+# image used for the healthcheck binary
+FROM golang:1.13.4-alpine AS gobuilder
+COPY healthcheck/ /go/src/healthcheck/
+RUN CGO_ENABLED=0 go build -ldflags '-w -s -extldflags "-static"' -o /healthcheck /go/src/healthcheck/
+
+#
+# ---
+#
+
 # image used to copy our official nginx binaries
 FROM nginx:1.17.5 AS base
 
@@ -28,6 +37,9 @@ RUN rm -r /opt && mkdir /opt \
 # start from the distroless scratch image (with glibc), based on debian:buster
 FROM gcr.io/distroless/base-debian10:nonroot
 
+# copy in our healthcheck binary
+COPY --from=gobuilder --chown=nonroot /healthcheck /healthcheck
+
 # copy in our required libraries
 COPY --from=base --chown=nonroot /opt /
 
@@ -40,5 +52,8 @@ USER nonroot
 # default nginx port
 EXPOSE 8080
 
+# healthcheck to report the container status
+HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 CMD [ "/healthcheck", "8080" ]
+
 # entrypoint
-ENTRYPOINT ["/usr/sbin/nginx", "-p", "/tmp/", "-g", "error_log /dev/stderr notice;", "-c", "/nginx.conf"]
+CMD ["/usr/sbin/nginx", "-p", "/tmp/", "-g", "error_log /dev/stderr notice;", "-c", "/nginx.conf"]
