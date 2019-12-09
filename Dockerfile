@@ -10,6 +10,9 @@ RUN CGO_ENABLED=0 go build -ldflags '-w -s -extldflags "-static"' -o /healthchec
 # image used to copy our official nginx binaries
 FROM nginx:1.17.5 AS base
 
+# create empty index page
+RUN echo 'Hello world' > /index.html
+
 # copy the required libraries out of the official nginx image (based on debian)
 RUN rm -r /opt && mkdir /opt \
     && cp -a --parents /usr/lib/nginx /opt \
@@ -37,6 +40,9 @@ RUN rm -r /opt && mkdir /opt \
 # start from the distroless scratch image (with glibc), based on debian:buster
 FROM gcr.io/distroless/base-debian10:nonroot
 
+# copy our empty index page
+COPY --from=base --chown=nonroot /index.html /assets/index.html
+
 # copy in our healthcheck binary
 COPY --from=gobuilder --chown=nonroot /healthcheck /healthcheck
 
@@ -53,7 +59,7 @@ USER nonroot
 EXPOSE 8080
 
 # healthcheck to report the container status
-HEALTHCHECK --interval=10s --timeout=10s --start-period=5s --retries=3 CMD [ "/healthcheck", "8080" ]
+HEALTHCHECK --interval=5s --timeout=10s --retries=3 CMD [ "/healthcheck", "8080" ]
 
 # entrypoint
 CMD ["/usr/sbin/nginx", "-p", "/tmp/", "-g", "error_log /dev/stderr notice;", "-c", "/nginx.conf"]
