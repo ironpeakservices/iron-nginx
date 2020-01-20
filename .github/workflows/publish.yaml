@@ -9,13 +9,13 @@ jobs:
     name: docker build
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+    - uses: actions/checkout@v2.0.0
     - name: extract tag
       id: vars
       run: echo ::set-output name=nginx_version::$(grep '^FROM nginx' Dockerfile  | cut -d ' ' -f 2 | cut -d ':' -f 2)
     - run: echo "Pushing version ${{ steps.vars.outputs.nginx_version }}"
     - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v.12
       with:
         registry: docker.pkg.github.com
         name: "ironpeakservices/iron-nginx/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
