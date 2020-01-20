@@ -21,6 +21,14 @@ jobs:
         name: "ironpeakservices/iron-nginx/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
         username: hazcod
         password: ${{ secrets.GITHUB_TOKEN }}
-
+    - name: Create GitHub release
+      uses: actions/create-release@v1
+      with:
+          tag_name: ${{ steps.vars.outputs.nginx_version }}
+          release_name: iron-nginx
+          draft: false
+          prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
