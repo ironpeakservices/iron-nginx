@@ -15,7 +15,7 @@ jobs:
       run: echo ::set-output name=nginx_version::$(grep '^FROM nginx' Dockerfile  | cut -d ' ' -f 2 | cut -d ':' -f 2)
     - run: echo "Pushing version ${{ steps.vars.outputs.nginx_version }}"
     - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@v.12
+      uses: elgohr/Publish-Docker-Github-Action@2.12
       with:
         registry: docker.pkg.github.com
         name: "ironpeakservices/iron-nginx/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
