@@ -55,3 +55,13 @@ jobs:
           -v "$(pwd)/vulndb/":/root/.cache/ \
           aquasec/trivy --severity HIGH,CRITICAL,MEDIUM --no-progress --only-update $DISTRO --ignore-unfixed --exit-code 1 --cache-dir /root/.cache/ image
         docker run --rm -v "$(pwd)/vulndb/":/root/.cache/ alpine:latest chmod 777 -R /root/.cache/
+
+
+  approve:
+    name: Dependabot PR Auto-approve
+    if: github.actor == 'dependabot[bot]' || github.actor == 'dependabot-preview[bot]'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: hmarr/auto-approve-action@v2.0.0
+      with:
+        github-token: "${{ secrets.GITHUB_TOKEN }}"
