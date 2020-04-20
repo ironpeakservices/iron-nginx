@@ -8,7 +8,7 @@ RUN CGO_ENABLED=0 go build -ldflags '-w -s -extldflags "-static"' -o /healthchec
 #
 
 # image used to copy our official nginx binaries
-FROM nginx:1.17.9 AS base
+FROM nginx:1.17.10 AS base
 
 # create empty index page
 RUN echo 'Hello world' > /index.html
