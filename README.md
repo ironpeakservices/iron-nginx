@@ -1,7 +1,7 @@
 # ironpeakservices/iron-nginx
 Secure base image for running nginx.
 
-`docker pull docker.pkg.github.com/ironpeakservices/iron-nginx/iron-nginx:1.17.5`
+`docker pull ghcr.io/iron-nginx/iron-nginx:1.17.5`
 
 ## How is this different?
 We build from the official nginx docker image, but additionally:
@@ -13,7 +13,7 @@ We build from the official nginx docker image, but additionally:
 
 ## Example
 ```
-FROM docker.pkg.github.com/ironpeakservices/iron-nginx/iron-nginx:1.17.5
+FROM ghcr.io/iron-nginx/iron-nginx:1.17.5
 COPY --chown=nonroot css/ js/ html/ /assets
 ```
 
