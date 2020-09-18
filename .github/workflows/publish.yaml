@@ -17,8 +17,8 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@2.21
       with:
-        registry: docker.pkg.github.com
-        name: "ironpeakservices/iron-nginx/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
+        registry: ghcr.io
+        name: "ghcr.io/ironpeakservices/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
         username: hazcod
         password: ${{ secrets.GITHUB_TOKEN }}
     - name: Create GitHub release
