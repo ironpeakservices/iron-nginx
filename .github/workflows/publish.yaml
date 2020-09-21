@@ -19,7 +19,7 @@ jobs:
       run: echo "Pushing version ${{ steps.vars.outputs.nginx_version }}"
     - 
       name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@2.21
+      uses: elgohr/Publish-Docker-Github-Action@2.22
       with:
         registry: ghcr.io
         name: "ghcr.io/ironpeakservices/iron-nginx:${{ steps.vars.outputs.nginx_version }}"
