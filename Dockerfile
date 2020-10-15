@@ -40,6 +40,9 @@ RUN rm -r /opt && mkdir /opt \
 # start from the distroless scratch image (with glibc), based on debian:buster
 FROM gcr.io/distroless/base-debian10:nonroot
 
+# image owner label
+LABEL org.opencontainers.image.source https://github.com/ironpeakservices/iron-nginx
+
 # copy our empty index page
 COPY --from=base --chown=nonroot /index.html /assets/index.html
 
