@@ -11,6 +11,6 @@ jobs:
     -
       uses: actions/checkout@v2
     -
-      uses: ahmadnassri/action-dependabot-auto-merge@v2.3
+      uses: ahmadnassri/action-dependabot-auto-merge@v2.4
       with:
         github-token: ${{ secrets.token }}
