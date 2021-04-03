@@ -1,7 +1,7 @@
 # image used for the healthcheck binary
 FROM golang:1.16.3-alpine AS gobuilder
 COPY healthcheck/ /go/src/healthcheck/
-RUN CGO_ENABLED=0 go build -ldflags '-w -s -extldflags "-static"' -o /healthcheck /go/src/healthcheck/
+RUN CGO_ENABLED=0 GO111MODULE=auto go build -trimpath -ldflags '-w -s -extldflags "-static"' -o /healthcheck /go/src/healthcheck/
 
 #
 # ---
