@@ -42,7 +42,7 @@ jobs:
     - name: docker build
       run: docker build . --file Dockerfile --tag image
     - name: cached scan db
-      uses: actions/cache@v2.1.5
+      uses: actions/cache@v2.1.6
       with:
         path: vulndb/
         key: trivy-vulndb
