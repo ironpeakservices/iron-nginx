@@ -8,7 +8,7 @@ RUN CGO_ENABLED=0 GO111MODULE=auto go build -trimpath -ldflags '-w -s -extldflag
 #
 
 # image used to copy our official nginx binaries
-FROM nginx:1.21.6 AS base
+FROM nginx:1.23.1 AS base
 
 # create empty index page
 RUN echo 'Hello world' > /index.html
